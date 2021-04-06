@@ -28,7 +28,7 @@
 # If your system is running macOS, call an helper for checking the dark mode and set the right background for Apple_Terminal.
 
 if [[ $TERM_PROGRAM == "Apple_Terminal" ]]; then
-    if [[ -x ~/macOS-config-files/lib/dark-mode ]]; then
-        ~/macOS-config-files/lib/dark-mode
+    if [[ -x ~/macOS-config-files/_zsh/lib/dark-mode ]]; then
+        ~/macOS-config-files/_zsh/lib/dark-mode
     fi
 fi
