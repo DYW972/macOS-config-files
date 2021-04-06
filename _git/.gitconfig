@@ -35,6 +35,9 @@
 # 	excludesfile = # if you have a global gitignore file for all your project, put the path here.
 # 	autocrlf = input
 # 	filemode = false # don't trust file mode
+# [init]
+# 	defaultBranch = master
+# 	templateDir = # if you have a template directory, put the path here. more info: https://bit.ly/2PwoEMH
 # [commit]
 # 	gpgsign = true
 # 	template = # if you have a template for commit message, put the path here.
