@@ -3,6 +3,19 @@ macOS-config-files
 
 This repository contains all the config files I use for development on my macOS.
 
+Contents
+--------
+
+* zsh
+
+	zsh config files inspired by couples of Devs around the Net.  
+
+
+* git
+
+	git configurations wrote after the reading of the entire documentation.  
+
+
 License
 --------
 
