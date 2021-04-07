@@ -1,7 +1,7 @@
 #!/usr/bin/osascript
-#========================================================================================        
+#========================================================================================
 # Title         : dark-mode.sh
-# Description   : Check if your macOS system is in dark mode and set the right theme/background for Apple_Terminal
+# Description   : If your macOS system is in dark mode, set the right theme for Terminal
 # Usage         : ~/macOs-config-files/_zsh/lib/dark-mode
 # Version       : 0.1   
 # Date          : 2021-04-06
