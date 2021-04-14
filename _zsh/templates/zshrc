@@ -1,0 +1,248 @@
+# zshrc config file
+# Yohan W. Dunon
+
+# set config version
+ZSHRC_VERSION="2021/04/11"
+
+
+## Dark Mode
+
+# Check if your system is in dark mode and update the Apple_Terminal theme
+
+function precmd() {
+
+if [[ $TERM_PROGRAM == "Apple_Terminal" ]]; then
+    if [[ -x ~/Developer/macOS-config-files/_zsh/library/dark-mode ]]; then
+        WINDOW_DARK_MODE=$(~/Developer/macOS-config-files/_zsh/library/dark-mode)
+    fi
+fi
+
+}
+
+## ZSH DIRECTORIES
+
+# path to Developer directory
+projects_dir=~/Developer
+
+# path to zsh directory
+zsh_dir=$projects_dir/macos-config-files/_zsh
+
+# path to zsh themes directory
+zsh_themes_dir=$zsh_dir/themes
+
+# path to zsh library directory
+zsh_library_dir=$zsh_dir/library
+
+# path to zsh functions directory
+zsh_functions_dir=$zsh_dir/functions
+
+# path to zsh completions directory
+zsh_completions_dir=$zsh_dir/completions
+
+# path to zsh scripts templates directory
+zsh_templates_dir=$zsh_dir/templates
+
+
+## PATH
+
+# prevent duplicate entries in path
+declare -U path
+
+# add custom path 
+path+=~/bin
+
+
+
+## SHELL OPTIONS
+### ‘globbing’ is a unix/shell term that refers to the expansion of wildcard characters, such as * and ? into full file paths and names.
+
+# enable extended globbing features
+setopt EXTENDED_GLOB
+
+# case insensitive globbing
+setopt NO_CASE_GLOB
+
+# sort extensions with numbers numerically
+setopt NUMERIC_GLOB_SORT
+
+# automatically change directory
+setopt AUTO_CD
+
+
+## HISTORY
+
+# history file config
+HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
+SAVEHIST=20000
+HISTSIZE=50000
+
+# add a bit more data timestamp in unix epoch time and elapsed time of the command
+setopt EXTENDED_HISTORY 
+
+# share history across multiple zsh sessions
+setopt SHARE_HISTORY
+
+# append to history
+setopt APPEND_HISTORY
+
+# adds commands as they are typed, not at shell exit
+setopt INC_APPEND_HISTORY
+
+# expire duplicates first
+setopt HIST_EXPIRE_DUPS_FIRST
+
+# do not store duplications
+setopt HIST_IGNORE_DUPS
+
+#ignore duplicates when searching
+setopt HIST_FIND_NO_DUPS
+
+# removes blank lines from history
+setopt HIST_REDUCE_BLANKS
+
+# show history substitution command before it is run
+setopt HIST_VERIFY
+
+
+## Correction
+### the shell will make a guess of what you meant to type and ask whether you want do that instead 
+### n: execute as typed 
+### y: accept and execute the suggested correction 
+### a: abort and do nothing
+### e: return to the prompt to continue editing
+
+# correct commands
+setopt CORRECT
+
+# correct all arguments
+setopt CORRECT_ALL
+
+# correction prompt
+SPROMPT="Correct %F{red}%R%f to %F{green}%r%f [nyae]?"
+
+## KEY BINDINGS
+### keybinding for history search
+
+bindkey $'^[[A' up-line-or-search    # up arrow
+bindkey $'^[[B' down-line-or-search  # down arrow
+
+
+## COMPLETION
+
+### (don't do this for root shells to avoid security warning)
+# add completion directory in fpath
+if [[ $EUID -ne 0 ]]; then
+    if [[ -d $zsh_completions_dir ]]; then
+        fpath=( $zsh_completions_dir $fpath )
+    fi
+fi 
+
+# case insensitive path-completion
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+
+# show descriptions when autocompleting
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' format 'Completing %d'
+
+# partial completion suggestions
+zstyle ':completion:*' list-suffixes true
+zstyle ':completion:*' expand prefix suffix
+
+# list with colors
+zstyle ':completion:*' list-colors ''
+
+# enable arrow key menu for completion
+zstyle ':completion:*' menu select
+
+# load completion
+autoload -Uz compinit && compinit
+
+
+## SSH
+
+# print a message on SSH connection:
+if [[ -n "$SSH_CLIENT" ]]; then
+	# ssh connection, print hostname and os version
+	echo "Welcome to $(scutil --get ComputerName) ($(sw_vers -productVersion))"
+fi
+
+
+## ENVIRONMENT VARIABLES
+
+# path variable
+#export PATH="$HOME/bin:/usr/local/bin:$PATH"
+
+# enable Terminal color
+export CLICOLOR=1
+
+# enable colors for list
+export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+
+# enable GPG_TTY for signing commits
+export GPG_TTY=$(tty)
+
+# set EDITOR to textmate
+if [[ -e "/usr/local/bin/mate" ]]; then
+    export EDITOR="mate" #"mate -w --resume"
+fi
+
+## ALIASES
+
+source $zsh_library_dir/aliases.zsh
+
+## FUNCTIONS
+
+### (don't do this for root shells to avoid security warning)
+# include zsh functions dir in fpath:
+if [[ $EUID -ne 0 ]]; then
+    if [[ -d $zsh_functions_dir ]]; then
+        fpath=( $zsh_functions_dir $fpath )
+    fi
+	
+    # prints path to frontmost finder window
+    autoload pwdf && pwdf
+
+    # man page functions
+    autoload xmanpage
+	
+	# git
+	#autoload git
+
+fi
+
+## TITLE BAR
+
+# only for Mojave and earlier
+if [[ $(sw_vers -buildVersion) < "19" ]]; then 
+    # this sets up the connection with the Apple Terminal Title Bar
+    autoload -U update_terminal_pwd && update_terminal_pwd
+fi
+
+## PROMPT
+
+# Oh-My-Git prompt
+source $zsh_themes_dir/oh-my-git/prompt.sh
+
+## PLUG-INS
+
+# zsh-autosuggestions
+### https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md
+if [[ -f $zsh_library_dir/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+ 	source $zsh_library_dir/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+ZSH_AUTOSUGGEST_STRATEGY=( completion history )
+
+# zsh-syntax-highlighting
+### (note, according to their docs, this must be loaded _LAST_)
+### https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
+if [[ -f $zsh_library_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+ 	source $zsh_library_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+## Armin Briegel tip
+# So a shell script (or in this case a sourced file), will always return the the exit code from the last command executed. Since the last command in this case is sourcing another file, that might very well not exist, I probably thought to prudent to add the true to make sure the file doesn't end on a non-zero exit code
+# It is not mandatory in any way
+
+### always return true
+true
