@@ -12,6 +12,7 @@ alias dcs="cd ~/Documents"
 alias dev="cd ~/Developer"
 # LIST FOLDERS OF FILES
 alias ll="ls -alG"
+alias currentree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 # MANAGE FILES OR FOLDER
 alias rm="rm -i"
 alias mv="mv -i"
