@@ -22,7 +22,7 @@ cleanup() {
     # ...
 }
 
-if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
+if [[ "${BASH_SOURCE[0]:-${(%):-%N}}" = "$0" ]]; then
     trap cleanup EXIT
     # Script goes here
     # ...
