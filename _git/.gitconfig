@@ -1,20 +1,23 @@
-# Adapt and uncomment the following lines :
-[user]
-	name =
-	email =
+# # Global git config :
+# # Uncomment and adapt your needs.
+# [user]
+# 	name =
+# 	email =
 # 	signingKey =
 # [core]
 # 	editor =
 # 	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-# 	excludesfile = # if you have a global gitignore file for all your project, put the path here.
+# 	excludesfile =# if you have a global gitignore file for all your project, put the path here.
 # 	autocrlf = input
 # 	filemode = false # don't trust file mode
 # [init]
-# 	defaultBranch = master
-# 	templateDir = # if you have a template directory, put the path here. more info: https://bit.ly/2PwoEMH
+# 	defaultBranch = main
+# 	templateDir =# if you have a template directory, put the path here. more info: https://bit.ly/2PwoEMH
+# [status]
+# 	showUntrackedFiles = all
 # [commit]
 # 	gpgsign = true
-# 	template = # if you have a template for commit message, put the path here.
+# 	template =# if you have a template for commit message, put the path here.
 # [color]
 # 	diff = auto
 # 	status = auto
